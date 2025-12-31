@@ -296,4 +296,23 @@
                 const match = m.name.toLowerCase().includes(q) || (m.salt && m.salt.toLowerCase().includes(q));
                 medCards[index].style.display = match ? "flex" : "none";
             });
-    
+        }
+
+        function uploadRx(input) {
+            if (input.files && input.files[0]) {
+                const user = JSON.parse(localStorage.getItem('prishaUser'));
+                db.ref('pOrders').push({ 
+                    item: "RX PRESCRIPTION UPLOADED", 
+                    price: "Wait for Call", 
+                    phone: user.phone, 
+                    status: 'Received', 
+                    time: new Date().toLocaleString(),
+                    img: "https://cdn-icons-png.flaticon.com/512/3022/3022206.png"
+                });
+                alert("Parcha upload ho gaya!"); showTab('orders-tab');
+            }
+        }
+    </script>
+</body>
+</html>
+
