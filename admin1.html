@@ -32,7 +32,7 @@
             <h1 class="text-2xl font-black text-[#2874f0] mb-2 uppercase italic tracking-tighter">PRISHA <span class="text-yellow-500">ADMIN</span></h1>
             <p class="text-[10px] font-bold text-gray-400 mb-6 uppercase tracking-widest border-b pb-2">Master Security Layer</p>
             <input type="password" id="adminPassInput" placeholder="Master Password" class="w-full px-4 py-4 rounded-2xl bg-gray-100 mb-4 text-center font-bold outline-none border-2 focus:border-[#2874f0]">
-            <button onclick="checkAdminAccess()" class="w-full bg-[#2874f0] text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition-all">Unlock System</button>
+            <button type="button" onclick="checkAdminAccess()" class="w-full bg-[#2874f0] text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition-all">Unlock System</button>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
                     <button onclick="openTab('sec-orders', this)" class="tab-btn nav-active px-5 py-2 rounded-xl text-[10px] font-bold uppercase">Orders</button>
                     <button onclick="openTab('sec-catalogue', this)" class="tab-btn bg-white/10 px-5 py-2 rounded-xl text-[10px] font-bold uppercase">Catalogue</button>
                     <button onclick="openTab('sec-experts', this)" class="tab-btn bg-white/10 px-5 py-2 rounded-xl text-[10px] font-bold uppercase">Experts</button>
-                    <button onclick="openTab('sec-add', this)" class="tab-btn bg-white/10 px-5 py-2 rounded-xl text-[10px] font-bold uppercase">+ Add Medicine</button>
+                    <button onclick="openTab('sec-add', this)" id="addTabBtn" class="tab-btn bg-white/10 px-5 py-2 rounded-xl text-[10px] font-bold uppercase">+ Add Medicine</button>
                 </div>
             </div>
         </header>
@@ -60,7 +60,22 @@
                 </div>
             </div>
 
-            <div id="sec-catalogue" class="tab-content"><div class="bg-white rounded-3xl p-4 border-t-4 border-orange-500"><input type="text" id="medSearch" onkeyup="renderCatalogue()" placeholder="Search..." class="p-3 border rounded-xl text-[10px] w-full mb-4 bg-gray-50"><table class="w-full text-left text-[10px]"><tbody id="catalogueBody" class="divide-y"></tbody></table></div></div>
+            <div id="sec-catalogue" class="tab-content">
+                <div class="bg-white rounded-3xl p-4 border-t-4 border-orange-500">
+                    <input type="text" id="medSearch" onkeyup="renderCatalogue()" placeholder="Search..." class="p-3 border rounded-xl text-[10px] w-full mb-4 bg-gray-50">
+                    <table class="w-full text-left text-[10px]">
+                        <thead>
+                            <tr class="text-gray-400 uppercase text-[8px] border-b">
+                                <th class="p-3">Img</th>
+                                <th class="p-3">Medicine Info</th>
+                                <th class="p-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="catalogueBody" class="divide-y"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <div id="sec-experts" class="tab-content">
                 <div id="expFormCard" class="bg-white rounded-3xl p-6 shadow-sm border-t-4 border-green-500 mb-8">
                     <h2 id="expFormTitle" class="font-bold text-gray-700 mb-4 text-xs uppercase italic text-center">Add/Edit Expert</h2>
@@ -68,14 +83,34 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input type="text" id="drN" placeholder="Full Name" class="p-3 border rounded-xl text-sm bg-gray-50">
                         <select id="drRole" class="p-3 border rounded-xl text-sm bg-gray-50 font-bold"><option value="PHARMACIST">PHARMACIST</option><option value="DOCTOR">DOCTOR</option><option value="SUPPORTIVE STAFF">SUPPORTIVE STAFF</option></select>
-                        <input type="text" id="drDeg" placeholder="Degree" class="p-3 border rounded-xl text-sm bg-gray-50"><input type="text" id="drCol" placeholder="College" class="p-3 border rounded-xl text-sm bg-gray-50"><input type="number" id="drExp" placeholder="Experience (Y)" class="p-3 border rounded-xl text-sm bg-gray-50"><input type="number" id="drPhone" placeholder="Phone" class="p-3 border rounded-xl text-sm bg-gray-50"><input type="file" id="drF" class="text-[10px] p-2 bg-white">
+                        <input type="text" id="drDeg" placeholder="Degree" class="p-3 border rounded-xl text-sm bg-gray-50">
+                        <input type="text" id="drCol" placeholder="College" class="p-3 border rounded-xl text-sm bg-gray-50">
+                        <input type="number" id="drExp" placeholder="Experience" class="p-3 border rounded-xl text-sm bg-gray-50">
+                        <input type="number" id="drPhone" placeholder="Phone" class="p-3 border rounded-xl text-sm bg-gray-50">
+                        <input type="file" id="drF" class="text-[10px] p-2 bg-white">
                     </div>
-                    <button onclick="saveExpertData()" id="expSaveBtn" class="w-full bg-green-600 text-white py-4 mt-4 rounded-2xl font-bold uppercase shadow-lg">Save Expert Data</button>
+                    <button onclick="saveExpertData()" class="w-full bg-green-600 text-white py-4 mt-4 rounded-2xl font-bold uppercase shadow-lg">Save Expert</button>
                 </div>
                 <div id="expertGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
             </div>
 
-            <div id="sec-add" class="tab-content"><div class="bg-white rounded-[2.5rem] shadow-2xl p-8 max-w-lg mx-auto border-t-8 border-blue-600"><h2 class="text-xl font-black text-blue-700 mb-8 text-center uppercase italic">Medicine Cloud Setup</h2><div class="space-y-5"><input type="text" id="mN" placeholder="Brand Name" class="w-full p-4 border-2 rounded-2xl text-sm bg-gray-50"><input type="text" id="mS" placeholder="Salt" class="w-full p-4 border-2 rounded-2xl text-sm bg-blue-50"><div class="grid grid-cols-2 gap-3"><input type="number" id="mM" placeholder="MRP" class="p-4 border-2 rounded-2xl"><input type="number" id="mP" placeholder="Selling" class="p-4 border-2 rounded-2xl bg-green-50"></div><input type="file" id="mF" class="text-xs"><button onclick="saveMedicineData()" class="w-full bg-[#fb641b] text-white py-5 rounded-2xl font-black uppercase text-sm active:scale-95 transition-all">Submit to Cloud</button></div></div></div>
+            <div id="sec-add" class="tab-content">
+                <div class="bg-white rounded-[2.5rem] shadow-2xl p-8 max-w-lg mx-auto border-t-8 border-blue-600">
+                    <h2 id="medFormTitle" class="text-xl font-black text-blue-700 mb-8 text-center uppercase italic">Medicine Cloud Setup</h2>
+                    <div class="space-y-5">
+                        <input type="hidden" id="editMedId">
+                        <input type="text" id="mN" placeholder="Brand Name" class="w-full p-4 border-2 rounded-2xl text-sm bg-gray-50">
+                        <input type="text" id="mB" placeholder="Company Name" class="w-full p-4 border-2 rounded-2xl text-sm bg-yellow-50 font-bold">
+                        <input type="text" id="mS" placeholder="Salt Composition" class="w-full p-4 border-2 rounded-2xl text-sm bg-blue-50">
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="number" id="mM" placeholder="MRP" class="p-4 border-2 rounded-2xl">
+                            <input type="number" id="mP" placeholder="Selling Price" class="p-4 border-2 rounded-2xl bg-green-50">
+                        </div>
+                        <input type="file" id="mF" class="text-xs">
+                        <button id="medSubmitBtn" onclick="saveMedicineData()" class="w-full bg-[#fb641b] text-white py-5 rounded-2xl font-black uppercase text-sm">Submit to Cloud</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -95,16 +130,32 @@
         const db = firebase.database();
 
         const MASTER_PASS = "Prisha@2025";
+
+        // FIX: Login Function 
         function checkAdminAccess() {
-            if(document.getElementById('adminPassInput').value === MASTER_PASS) {
+            const pass = document.getElementById('adminPassInput').value;
+            if(pass === MASTER_PASS) {
                 document.getElementById('securityOverlay').style.display = 'none';
                 document.getElementById('adminMainPanel').style.display = 'block';
                 sessionStorage.setItem('prishaAuth', 'true');
                 startCloudSync();
-            } else { alert("Wrong Pass!"); }
+            } else {
+                alert("Incorrect Password!");
+            }
         }
-        window.onload = () => { if(sessionStorage.getItem('prishaAuth') === 'true') { document.getElementById('securityOverlay').style.display = 'none'; document.getElementById('adminMainPanel').style.display = 'block'; startCloudSync(); } };
-        function adminLogout() { sessionStorage.removeItem('prishaAuth'); location.reload(); }
+
+        window.onload = function() {
+            if(sessionStorage.getItem('prishaAuth') === 'true') {
+                document.getElementById('securityOverlay').style.display = 'none';
+                document.getElementById('adminMainPanel').style.display = 'block';
+                startCloudSync();
+            }
+        };
+
+        function adminLogout() {
+            sessionStorage.removeItem('prishaAuth');
+            location.reload();
+        }
 
         function startCloudSync() {
             db.ref('pOrders').on('value', snap => renderOrders(snap.val()));
@@ -112,10 +163,9 @@
             db.ref('pExperts').on('value', snap => renderExperts(snap.val()));
         }
 
-        // --- BUTTONS LOGIC FIXED (Matched updateStatus and updateStatus) ---
         function renderOrders(orders) {
             const list = document.getElementById('orderList');
-            if(!orders) { list.innerHTML = "No Orders"; return; }
+            if(!orders) { list.innerHTML = "<p class='text-center py-10 font-bold text-gray-400 uppercase tracking-widest'>No active orders</p>"; return; }
             const grouped = {};
             Object.keys(orders).forEach(id => {
                 const o = orders[id]; const key = o.time + "_" + o.phone;
@@ -129,46 +179,96 @@
                 if(group.status === 'Received') btns = `<button onclick='updateStatus(${idsJson}, "Accepted")' class="bg-yellow-500 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Accept</button>`;
                 else if(group.status === 'Accepted') btns = `<button onclick='updateStatus(${idsJson}, "Shipped")' class="bg-blue-600 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Ship</button>`;
                 else if(group.status === 'Shipped') btns = `<button onclick='updateStatus(${idsJson}, "Delivered")' class="bg-orange-500 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Deliver</button>`;
-                else if(group.status === 'Delivered') btns = `<button onclick='updateStatus(${idsJson}, "Completed")' class="bg-green-700 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Finish Order</button>`;
+                else if(group.status === 'Delivered') btns = `<button onclick='updateStatus(${idsJson}, "Completed")' class="bg-green-700 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Finish</button>`;
                 else if(group.status === 'Completed') btns = `<span class="text-green-600 font-black text-[10px] italic">✔ COMPLETED</span>`;
-
-                const cancelBtn = (group.status !== 'Completed' && group.status !== 'Cancelled') ? 
-                    `<button onclick='adminCancel(${idsJson})' class="text-red-500 border border-red-200 px-3 py-2 rounded-xl text-[10px] font-bold">Cancel</button>` : "";
-
+                
                 return `<div class="bg-slate-50 p-5 rounded-[2rem] border shadow-sm flex flex-col gap-3">
                     <div class="flex justify-between items-start"><div class="flex-1"><b class="text-blue-800 text-sm uppercase">${allItems}</b><br><span class="text-[10px] font-bold text-gray-400 uppercase">${group.customer}</span></div><span class="px-3 py-1 rounded-full text-[8px] font-black uppercase status-${group.status}">${group.status}</span></div>
                     <p class="text-[10px] text-gray-500 italic bg-white p-3 rounded-2xl border-l-4 border-blue-500">Address: ${group.deliveryAddress} | Ph: <b>${group.phone}</b></p>
-                    ${group.cancelReason ? `<p class="text-[9px] text-red-500 bg-red-50 p-2 rounded-lg italic">Reason: ${group.cancelReason}</p>` : ''}
-                    <div class="flex justify-end gap-2 border-t pt-3 mt-1"><button onclick="printBill('${group.ids[0]}')" class="bg-gray-800 text-white px-4 py-2 rounded-xl text-[10px] font-bold italic">Bill</button>${btns} ${cancelBtn}</div>
+                    <div class="flex justify-end gap-2 border-t pt-3 mt-1">${btns}</div>
                 </div>`;
             }).join('');
         }
 
-        // --- BUTTON HANDLERS FIXED ---
-        function updateStatus(ids, s) { 
-            const up = {}; 
-            ids.forEach(id => { up[`pOrders/${id}/status`] = s; }); 
-            db.ref().update(up).then(() => alert("Status Updated: " + s));
+        function updateStatus(ids, s) { const up = {}; ids.forEach(id => { up[`pOrders/${id}/status`] = s; }); db.ref().update(up); }
+
+        function saveMedicineData() {
+            const n = document.getElementById('mN').value;
+            const b = document.getElementById('mB').value;
+            const p = document.getElementById('mP').value;
+            const editId = document.getElementById('editMedId').value;
+            if(!n || !b || !p) return alert("Required fields missing!");
+            const data = { name:n, brand:b, salt:document.getElementById('mS').value, mrp:document.getElementById('mM').value, price:p };
+            const f = document.getElementById('mF').files[0];
+            const handleSave = (finalData) => {
+                const ref = editId ? db.ref('pMeds/' + editId) : db.ref('pMeds').push();
+                ref.set(finalData).then(() => { alert("Done!"); location.reload(); });
+            };
+            if(f) {
+                const r = new FileReader();
+                r.onload = (e) => { data.img = e.target.result; handleSave(data); };
+                r.readAsDataURL(f);
+            } else {
+                if(editId) data.img = window.currentMeds[editId].img;
+                handleSave(data);
+            }
         }
 
-        function adminCancel(ids) { 
-            const r = prompt("Cancellation Reason:"); 
-            if(r) { 
-                const up = {}; 
-                ids.forEach(id => { up[`pOrders/${id}/status`] = 'Cancelled'; up[`pOrders/${id}/cancelReason`] = r; }); 
-                db.ref().update(up).then(() => alert("Order Cancelled"));
-            } 
+        function renderCatalogue() {
+            const meds = window.currentMeds || {};
+            const sorted = Object.keys(meds).sort((a,b) => meds[a].name.localeCompare(meds[b].name));
+            document.getElementById('catalogueBody').innerHTML = sorted.map(id => `
+                <tr class="border-b">
+                    <td class="p-3"><img src="${meds[id].img || ''}" class="w-10 h-10 rounded object-cover"></td>
+                    <td class="p-3"><b class="text-blue-700">${meds[id].name}</b><br><span class="text-[8px] font-bold uppercase bg-yellow-100">${meds[id].brand}</span></td>
+                    <td class="text-right p-3">
+                        <button onclick="editMedicine('${id}')" class="text-blue-600 font-bold mr-2">EDIT</button>
+                        <button onclick="db.ref('pMeds/${id}').remove()" class="text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>`).join('');
         }
 
-        // --- ALL OTHER FEATURES (Experts, Catalogue, Medicines) PRESERVED ---
-        function printBill(id) { db.ref('pOrders/' + id).once('value', snap => { const o = snap.val(); document.getElementById('billContent').innerHTML = `DATE: ${o.time}<br>NAME: ${o.customer}<hr>ITEM: ${o.item}<br>PRICE: ₹${o.price}`; window.print(); }); }
-        function saveExpertData() { const name = document.getElementById('drN').value; const editId = document.getElementById('editExpId').value; const data = { name: name, role: document.getElementById('drRole').value, degree: document.getElementById('drDeg').value, college: document.getElementById('drCol').value, experience: document.getElementById('drExp').value, phone: document.getElementById('drPhone').value }; if(!name) return alert("Required!"); const id = editId || Date.now(); const f = document.getElementById('drF').files[0]; if(f) { const r = new FileReader(); r.onload = (e) => { data.img = e.target.result; db.ref('pExperts/' + id).set(data).then(resetExpertForm); }; r.readAsDataURL(f); } else { db.ref('pExperts/' + id).update(data).then(resetExpertForm); } }
-        function renderExperts(ex) { if(!ex) { document.getElementById('expertGrid').innerHTML = ""; return; } document.getElementById('expertGrid').innerHTML = Object.keys(ex).map(id => `<div class="bg-white p-5 rounded-3xl shadow-sm border text-center flex flex-col items-center"><img src="${ex[id].img}" class="w-20 h-20 rounded-2xl mx-auto mb-3 object-cover border-2 border-blue-500 shadow-md"><p class="font-black text-blue-800 text-xs uppercase">${ex[id].name}</p><p class="text-[8px] font-bold text-blue-400">${ex[id].role}</p><div class="flex gap-2 mt-4 w-full"><button onclick="editExpert('${id}')" class="flex-1 bg-blue-50 text-blue-600 py-2 rounded-xl text-[9px] font-black">EDIT</button><button onclick="db.ref('pExperts/${id}').remove()" class="bg-red-50 text-red-500 px-3 py-2 rounded-xl text-[10px]"><i class="fa-solid fa-trash"></i></button></div></div>`).join(''); }
-        function editExpert(id) { db.ref('pExperts/' + id).once('value', snap => { const e = snap.val(); document.getElementById('editExpId').value = id; document.getElementById('drN').value = e.name; document.getElementById('drRole').value = e.role; document.getElementById('drDeg').value = e.degree; document.getElementById('drCol').value = e.college; document.getElementById('drExp').value = e.experience; document.getElementById('drPhone').value = e.phone; document.getElementById('expFormTitle').innerText = "Update: " + e.name; window.scrollTo({top: 0, behavior: 'smooth'}); }); }
-        function resetExpertForm() { document.getElementById('editExpId').value = ""; document.getElementById('drN').value = ""; document.getElementById('expFormTitle').innerText = "Add/Edit Expert"; alert("Expert Saved!"); }
-        function saveMedicineData() { const n = document.getElementById('mN').value; const p = document.getElementById('mP').value; const data = { name:n, salt:document.getElementById('mS').value, mrp:document.getElementById('mM').value, price:p }; const f = document.getElementById('mF').files[0]; if(f) { const r = new FileReader(); r.onload = (e) => { data.img = e.target.result; db.ref('pMeds').push(data).then(() => location.reload()); }; r.readAsDataURL(f); } else { db.ref('pMeds').push(data).then(() => alert("Saved!")); } }
-        function renderCatalogue() { const meds = window.currentMeds || {}; document.getElementById('catalogueBody').innerHTML = Object.keys(meds).map(id => `<tr class="border-b"><td class="p-3"><img src="${meds[id].img}" class="w-10 h-10 rounded"></td><td class="p-3"><b>${meds[id].name}</b></td><td class="text-right"><button onclick="db.ref('pMeds/${id}').remove()" class="text-red-500 text-lg"><i class="fa-solid fa-trash"></i></button></td></tr>`).join(''); }
-        function openTab(id, btn) { document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('nav-active'); b.classList.add('bg-white/10'); }); btn.classList.add('nav-active'); }
+        function editMedicine(id) {
+            const m = window.currentMeds[id];
+            document.getElementById('editMedId').value = id;
+            document.getElementById('mN').value = m.name;
+            document.getElementById('mB').value = m.brand || "";
+            document.getElementById('mS').value = m.salt;
+            document.getElementById('mM').value = m.mrp;
+            document.getElementById('mP').value = m.price;
+            openTab('sec-add', document.getElementById('addTabBtn'));
+        }
+
+        function openTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('nav-active'); b.classList.add('bg-white/10'); });
+            btn.classList.add('nav-active');
+        }
+
+        function saveExpertData() {
+            const n = document.getElementById('drN').value;
+            const editId = document.getElementById('editExpId').value;
+            const data = { name:n, role:document.getElementById('drRole').value, degree:document.getElementById('drDeg').value, college:document.getElementById('drCol').value, experience:document.getElementById('drExp').value, phone:document.getElementById('drPhone').value };
+            const f = document.getElementById('drF').files[0];
+            const id = editId || Date.now();
+            if(f) {
+                const r = new FileReader();
+                r.onload = (e) => { data.img = e.target.result; db.ref('pExperts/' + id).set(data).then(() => location.reload()); };
+                r.readAsDataURL(f);
+            } else { db.ref('pExperts/' + id).update(data).then(() => location.reload()); }
+        }
+
+        function renderExperts(ex) {
+            if(!ex) return;
+            document.getElementById('expertGrid').innerHTML = Object.keys(ex).map(id => `
+                <div class="bg-white p-4 rounded-3xl text-center border">
+                    <img src="${ex[id].img}" class="w-16 h-16 rounded-2xl mx-auto mb-2 object-cover">
+                    <p class="font-bold text-xs">${ex[id].name}</p>
+                    <button onclick="db.ref('pExperts/${id}').remove()" class="text-red-500 text-[10px] mt-2 italic">Remove</button>
+                </div>`).join('');
+        }
     </script>
 </body>
-</html>
+    </html>
+    
