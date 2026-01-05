@@ -73,7 +73,7 @@
                 </div>
                 <label class="bg-white text-blue-900 w-16 h-16 rounded-2xl flex items-center justify-center cursor-pointer active:scale-90">
                     <i class="fa-solid fa-camera-retro text-3xl"></i>
-                    <input type="file" class="hidden" accept="image/*">
+                    <input type="file" id="prescInput" class="hidden" accept="image/*" onchange="uploadPrescription(this)">
                 </label>
             </div>
             <div id="expertBar" class="flex gap-4 overflow-x-auto pb-6 no-scrollbar mb-4"></div>
@@ -187,6 +187,7 @@
             document.getElementById('appInterface').style.display = 'block';
             updateProfileUI(user);
             syncCloudStore();
+            renderOrders(); // Orders load karein
         }
 
         window.onload = function() {
@@ -223,17 +224,47 @@
             }).join('');
         }
 
-        function openProductDetails(id) {
-            const m = allMeds[id];
-            document.getElementById('modalImg').src = m.img;
-            document.getElementById('modalName').innerText = m.name;
-            document.getElementById('modalSalt').innerText = m.salt || "High Quality Salt";
-            document.getElementById('modalPrice').innerText = "₹" + m.price;
-            document.getElementById('modalAddBtn').onclick = () => { addToCart(m.name, m.price, m.img); closeProductModal(); };
-            document.getElementById('productModal').classList.add('active-modal');
+        function showTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.replace('text-blue-600', 'text-gray-400'));
+            if(btn) btn.classList.replace('text-gray-400', 'text-blue-600');
+            if(tabId === 'cart-tab') renderCart();
+            if(tabId === 'orders-tab') renderOrders();
         }
 
-        function closeProductModal() { document.getElementById('productModal').classList.remove('active-modal'); }
+        function updateProfileUI(u) {
+            document.getElementById('profName').innerText = u.name;
+            document.getElementById('profPhone').innerText = "+91 " + u.phone;
+            document.getElementById('profAddr').innerText = u.fullAddress;
+        }
+
+        function handleLogout() { localStorage.clear(); location.reload(); }
+
+        // --- PRESCRIPTION UPLOAD START ---
+        function uploadPrescription(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const user = JSON.parse(localStorage.getItem('prishaUser'));
+                    if(!user) return;
+                    const time = new Date().toLocaleString('en-IN');
+                    db.ref('pOrders').push({
+                        ...user,
+                        item: "PRESCRIPTION ORDER (Parcha)",
+                        price: "Pending",
+                        img: e.target.result,
+                        status: 'Received',
+                        time: time
+                    });
+                    alert("Parcha Upload Ho Gaya!");
+                    showTab('orders-tab', document.querySelectorAll('.nav-btn')[2]);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        // --- PRESCRIPTION UPLOAD END ---
 
         function addToCart(name, price, img) {
             const index = myCart.findIndex(i => i.name === name);
@@ -285,71 +316,4 @@
             const user = JSON.parse(localStorage.getItem('prishaUser'));
             const time = new Date().toLocaleString('en-IN');
             myCart.forEach(item => {
-                db.ref('pOrders').push({...user, item: `${item.name} (Qty: ${item.qty})`, price: item.price * item.qty, img: item.img, status: 'Received', time: time});
-            });
-            myCart = []; updateCartBadge(); alert("Order Safal Hua!"); showTab('orders-tab', document.querySelectorAll('.nav-btn')[2]);
-        }
-
-        function cancelOrder(key) {
-            if(confirm("Bhai, kya aap sach mein order cancel karna chahte hain?")) {
-                db.ref('pOrders/' + key).update({ status: 'Cancelled' });
-                alert("Order Cancel ho gaya!");
-            }
-        }
-
-        function renderOrders() {
-            const user = JSON.parse(localStorage.getItem('prishaUser'));
-            db.ref('pOrders').on('value', snap => {
-                const data = snap.val() || {};
-                const list = Object.keys(data).map(k => ({...data[k], key: k})).filter(o => o.phone === user.phone).reverse();
-                document.getElementById('orderList').innerHTML = list.map(o => {
-                    let canCancel = (o.status === 'Received' || o.status === 'Accepted');
-                    return `
-                    <div class="bg-white p-5 rounded-[2rem] border-l-8 ${o.status==='Cancelled'?'border-red-400':'border-blue-600'} shadow-sm mb-3">
-                        <div class="flex items-start gap-3">
-                            <img src="${o.img}" class="w-14 h-14 object-contain">
-                            <div class="flex-1">
-                                <p class="font-black text-gray-800 text-xs uppercase leading-tight italic">${o.item}</p>
-                                <p class="text-[8px] text-gray-400 italic">${o.time}</p>
-                                <p class="text-[10px] font-black mt-1 ${o.status==='Cancelled'?'text-red-500':'text-blue-700'}">${o.status}</p>
-                            </div>
-                            <div class="font-black text-blue-700 text-xs italic text-right">
-                                ₹${o.price}
-                                ${canCancel ? `<button onclick="cancelOrder('${o.key}')" class="block mt-2 text-[8px] text-red-500 border border-red-500 px-2 py-1 rounded-full uppercase font-black">Cancel</button>` : ''}
-                            </div>
-                        </div>
-                    </div>`;
-                }).join('');
-            });
-        }
-
-        function showTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(b => { b.classList.remove('text-blue-600'); b.classList.add('text-gray-400'); });
-            if(btn) { btn.classList.add('text-blue-600'); btn.classList.remove('text-gray-400'); }
-            if(id === 'orders-tab') renderOrders();
-            if(id === 'cart-tab') renderCart();
-        }
-
-        function updateProfileUI(u) {
-            document.getElementById('profName').innerText = u.name;
-            document.getElementById('profPhone').innerText = "+91 " + u.phone;
-            document.getElementById('profAddr').innerText = u.fullAddress;
-        }
-
-        function handleLogout() { localStorage.removeItem('prishaUser'); location.reload(); }
-
-        function filterMeds() {
-            let q = document.getElementById('search').value.toLowerCase();
-            const medCards = document.querySelectorAll('#medGrid > div');
-            Object.keys(allMeds).forEach((key, index) => {
-                const m = allMeds[key];
-                const match = m.name.toLowerCase().includes(q) || (m.salt && m.salt.toLowerCase().includes(q));
-                if(medCards[index]) medCards[index].style.display = match ? "flex" : "none";
-            });
-        }
-    </script>
-</body>
-</html>
+                db.ref('pOrders').push({...user, item: `${item.name} (Qty: ${item.qty})`, price: item.price * item.qty, img: item.img,
