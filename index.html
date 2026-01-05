@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prisha Medical - Final Verified Cloud</title>
+    <title>Prisha Medical - Final Verified</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -34,7 +34,7 @@
                 <i class="fa-solid fa-hand-holding-medical text-4xl text-blue-900"></i>
             </div>
             <h1 class="text-4xl font-black italic uppercase tracking-tighter">PRISHA <span class="text-yellow-400">MEDICAL</span></h1>
-            <p class="text-blue-100 text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 mt-1 italic">Quality Healthcare At Home</p>
+            <p class="text-blue-100 text-[10px] font-bold uppercase mt-1 italic">Quality Healthcare At Home</p>
         </div>
         <div class="w-full max-w-md glass-panel p-8 rounded-[3rem] shadow-2xl">
             <div class="space-y-4">
@@ -87,53 +87,46 @@
             <div id="cartFooter" class="fixed bottom-24 left-0 right-0 p-4 bg-white border-t hidden shadow-inner z-40">
                 <div class="max-w-4xl mx-auto flex justify-between items-center">
                     <div><p class="text-[10px] font-bold text-gray-400 uppercase">Total Bill</p><p id="cartTotal" class="text-xl font-black text-blue-700 italic">₹0</p></div>
-                    <button onclick="checkout()" class="bg-yellow-400 text-blue-900 px-8 py-3 rounded-2xl font-black uppercase shadow-lg active:scale-95">Place Order</button>
+                    <button onclick="checkout()" class="bg-yellow-400 text-blue-900 px-8 py-3 rounded-2xl font-black uppercase shadow-lg">Place Order</button>
                 </div>
             </div>
         </main>
 
         <main id="help-tab" class="tab-content max-w-4xl mx-auto p-4">
-            <h2 class="text-xl font-black mb-6 text-blue-800 italic uppercase underline text-center italic">Support Center</h2>
+            <h2 class="text-xl font-black mb-6 text-blue-800 italic uppercase underline text-center">Support Center</h2>
             <div class="space-y-6">
-                <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border-l-[10px] border-green-500 flex flex-col gap-4">
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-truck-fast text-2xl text-green-600"></i>
-                        <div><h3 class="font-black text-gray-800 uppercase text-xs">Order Related Queries</h3><p class="text-[10px] text-gray-400 font-bold italic">आर्डर की जानकारी यहाँ लें</p></div>
-                    </div>
-                    <a href="tel:8825301295" class="w-full bg-green-500 text-white py-3 rounded-2xl text-center font-black shadow-lg">CALL 8825301295</a>
-                </div>
-                <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border-l-[10px] border-blue-600 flex flex-col gap-4">
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-screwdriver-wrench text-2xl text-blue-600"></i>
-                        <div><h3 class="font-black text-gray-800 uppercase text-xs">Technical Issues</h3><p class="text-[10px] text-gray-400 font-bold italic">ऐप से जुड़ी समस्या यहाँ बताएं</p></div>
-                    </div>
-                    <a href="tel:9229262539" class="w-full bg-blue-600 text-white py-3 rounded-2xl text-center font-black shadow-lg">CALL 9229262539</a>
-                </div>
+                <a href="tel:8825301295" class="block bg-white rounded-[2.5rem] p-6 shadow-xl border-l-[10px] border-green-500">
+                    <h3 class="font-black text-gray-800 uppercase">Order Related Queries</h3>
+                    <p class="text-green-600 font-bold">CALL 8825301295</p>
+                </a>
+                <a href="tel:9229262539" class="block bg-white rounded-[2.5rem] p-6 shadow-xl border-l-[10px] border-blue-600">
+                    <h3 class="font-black text-gray-800 uppercase">Technical Issues</h3>
+                    <p class="text-blue-600 font-bold">CALL 9229262539</p>
+                </a>
             </div>
         </main>
 
         <main id="orders-tab" class="tab-content max-w-4xl mx-auto p-4">
-            <h2 class="text-xl font-black mb-6 text-blue-800 italic uppercase underline italic">Order History</h2>
+            <h2 class="text-xl font-black mb-6 text-blue-800 italic uppercase underline text-center">Order History</h2>
             <div id="orderList" class="space-y-4"></div>
         </main>
 
         <main id="profile-tab" class="tab-content max-w-4xl mx-auto p-4">
             <div class="bg-white rounded-[2.5rem] p-8 shadow-xl text-center border">
-                <h3 id="profName" class="text-2xl font-black text-gray-800 uppercase italic">User</h3>
+                <h3 id="profName" class="text-2xl font-black text-gray-800 uppercase">User</h3>
                 <p id="profPhone" class="text-blue-600 font-bold mb-4">+91 0000000000</p>
-                <div id="profAddr" class="text-left bg-gray-50 p-4 rounded-2xl mb-8 border font-bold text-sm text-gray-700 italic">Address Details</div>
-                <button onclick="handleLogout()" class="w-full bg-red-500 text-white py-4 rounded-2xl font-black uppercase shadow-xl">LOGOUT ACCOUNT</button>
+                <div id="profAddr" class="text-left bg-gray-50 p-4 rounded-2xl mb-8 border font-bold text-gray-700">Address Details</div>
+                <button onclick="handleLogout()" class="w-full bg-red-500 text-white py-4 rounded-2xl font-black uppercase">LOGOUT</button>
             </div>
         </main>
 
         <nav class="fixed bottom-0 w-full bg-white border-t flex justify-around p-4 shadow-2xl z-50 rounded-t-[2.5rem]">
-            <button onclick="showTab('home-tab', this)" class="nav-btn active text-blue-600 flex flex-col items-center"><i class="fa-solid fa-house"></i><span class="text-[9px] mt-1 font-bold italic">HOME</span></button>
+            <button onclick="showTab('home-tab', this)" class="nav-btn active text-blue-600 flex flex-col items-center"><i class="fa-solid fa-house"></i></button>
             <button onclick="showTab('cart-tab', this)" class="nav-btn text-gray-400 flex flex-col items-center relative">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-                <span class="text-[9px] mt-1 font-bold italic">CART</span>
             </button>
-            <button onclick="showTab('orders-tab', this)" class="nav-btn text-gray-400 flex flex-col items-center"><i class="fa-solid fa-truck-fast"></i><span class="text-[9px] mt-1 font-bold italic">ORDERS</span></button>
+            <button onclick="showTab('orders-tab', this)" class="nav-btn text-gray-400 flex flex-col items-center"><i class="fa-solid fa-truck-fast"></i></button>
         </nav>
     </div>
 
@@ -144,11 +137,11 @@
                 <button onclick="closeProductModal()" class="absolute top-5 right-5 bg-white/80 w-10 h-10 rounded-full flex items-center justify-center text-gray-800 shadow-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-8">
-                <h2 id="modalName" class="text-2xl font-black text-blue-900 uppercase italic">Name</h2>
-                <p id="modalSalt" class="text-blue-500 font-bold text-sm italic mb-6 italic tracking-tighter">Composition</p>
+                <h2 id="modalName" class="text-2xl font-black text-blue-900 uppercase">Name</h2>
+                <p id="modalSalt" class="text-blue-500 font-bold text-sm mb-6">Composition</p>
                 <div class="flex items-center justify-between border-t pt-6">
-                    <p id="modalPrice" class="text-2xl font-black text-blue-700 italic">₹0</p>
-                    <button id="modalAddBtn" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase shadow-xl active:scale-95">ADD TO CART</button>
+                    <p id="modalPrice" class="text-2xl font-black text-blue-700">₹0</p>
+                    <button id="modalAddBtn" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black uppercase">ADD TO CART</button>
                 </div>
             </div>
         </div>
@@ -176,52 +169,33 @@
             const v = document.getElementById('uVillage').value;
             const b = document.getElementById('uBlock').value;
             const pin = document.getElementById('uPin').value;
-            if(!n || !p || !v || !b || !pin) { alert("Puri details bhariye!"); return; }
+            if(!n || !p || !v || !b || !pin) { alert("Sari details bhariye!"); return; }
             const user = { name: n, phone: p, fullAddress: `${v}, Block: ${b}, Pin: ${pin}` };
             localStorage.setItem('prishaUser', JSON.stringify(user));
-            openAppInterface(user);
-        }
-
-        function openAppInterface(user) {
+            
+            // Login Success: Hide login, show app
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('appInterface').style.display = 'block';
             updateProfileUI(user);
             syncCloudStore();
-            renderOrders(); // Orders load karein
+            renderOrders();
         }
 
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('prishaUser'));
-            if(user) openAppInterface(user);
+            if(user) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appInterface').style.display = 'block';
+                updateProfileUI(user);
+                syncCloudStore();
+                renderOrders();
+            }
         };
 
-        function syncCloudStore() {
-            db.ref('pExperts').on('value', snap => {
-                const exps = snap.val() || {};
-                document.getElementById('expertBar').innerHTML = Object.keys(exps).map(k => `
-                    <div class="min-w-[110px] bg-white p-3 rounded-[2.5rem] border text-center shadow-sm">
-                        <a href="tel:${exps[k].phone}"><img src="${exps[k].img}" class="w-12 h-12 rounded-full mx-auto object-cover border-2 border-blue-500 mb-1"></a>
-                        <h4 class="font-black text-[8px] uppercase italic leading-tight">${exps[k].name}</h4>
-                    </div>`).join('');
-            });
-            db.ref('pMeds').on('value', snap => {
-                allMeds = snap.val() || {};
-                renderMedicineGrid(allMeds);
-            });
-        }
-
-        function renderMedicineGrid(meds) {
-            document.getElementById('medGrid').innerHTML = Object.keys(meds).map(k => {
-                const m = meds[k];
-                return `<div class="bg-white p-3 rounded-[2.5rem] border flex flex-col justify-between">
-                    <div onclick="openProductDetails('${k}')">
-                        <img src="${m.img}" class="h-28 w-full object-contain mb-2">
-                        <h3 class="font-black text-[10px] uppercase h-8 overflow-hidden leading-tight italic">${m.name}</h3>
-                        <p class="text-[9px] font-black text-blue-700 italic mt-1">₹${m.price}</p>
-                    </div>
-                    <button onclick="addToCart('${m.name}', ${m.price}, '${m.img}')" class="w-full bg-blue-600 text-white py-2 rounded-full text-[8px] font-black uppercase mt-2 shadow-md">Add</button>
-                </div>`;
-            }).join('');
+        function updateProfileUI(u) {
+            if(document.getElementById('profName')) document.getElementById('profName').innerText = u.name;
+            if(document.getElementById('profPhone')) document.getElementById('profPhone').innerText = "+91 " + u.phone;
+            if(document.getElementById('profAddr')) document.getElementById('profAddr').innerText = u.fullAddress;
         }
 
         function showTab(tabId, btn) {
@@ -233,51 +207,80 @@
             if(tabId === 'orders-tab') renderOrders();
         }
 
-        function updateProfileUI(u) {
-            document.getElementById('profName').innerText = u.name;
-            document.getElementById('profPhone').innerText = "+91 " + u.phone;
-            document.getElementById('profAddr').innerText = u.fullAddress;
-        }
-
-        function handleLogout() { localStorage.clear(); location.reload(); }
-
-        // --- PRESCRIPTION UPLOAD START ---
         function uploadPrescription(input) {
             if (input.files && input.files[0]) {
-                const file = input.files[0];
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const user = JSON.parse(localStorage.getItem('prishaUser'));
                     if(!user) return;
-                    const time = new Date().toLocaleString('en-IN');
                     db.ref('pOrders').push({
                         ...user,
-                        item: "PRESCRIPTION ORDER (Parcha)",
+                        item: "PRESCRIPTION (Parcha Uploaded)",
                         price: "Pending",
                         img: e.target.result,
                         status: 'Received',
-                        time: time
+                        time: new Date().toLocaleString('en-IN')
+                    }).then(() => {
+                        alert("Parcha bhej diya gaya!");
+                        showTab('orders-tab', document.querySelectorAll('.nav-btn')[2]);
                     });
-                    alert("Parcha Upload Ho Gaya!");
-                    showTab('orders-tab', document.querySelectorAll('.nav-btn')[2]);
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(input.files[0]);
             }
         }
-        // --- PRESCRIPTION UPLOAD END ---
+
+        function filterMeds() {
+            const q = document.getElementById('search').value.toLowerCase();
+            const filtered = {};
+            Object.keys(allMeds).forEach(k => {
+                if(allMeds[k].name.toLowerCase().includes(q) || (allMeds[k].salt && allMeds[k].salt.toLowerCase().includes(q))) {
+                    filtered[k] = allMeds[k];
+                }
+            });
+            renderMedicineGrid(filtered);
+        }
+
+        function syncCloudStore() {
+            db.ref('pExperts').on('value', snap => {
+                const exps = snap.val() || {};
+                document.getElementById('expertBar').innerHTML = Object.keys(exps).map(k => `
+                    <div class="min-w-[110px] bg-white p-3 rounded-[2.5rem] border text-center">
+                        <a href="tel:${exps[k].phone}"><img src="${exps[k].img}" class="w-12 h-12 rounded-full mx-auto object-cover border-2 border-blue-500 mb-1"></a>
+                        <h4 class="font-black text-[8px] uppercase italic">${exps[k].name}</h4>
+                    </div>`).join('');
+            });
+            db.ref('pMeds').on('value', snap => {
+                allMeds = snap.val() || {};
+                renderMedicineGrid(allMeds);
+            });
+        }
+
+        function renderMedicineGrid(meds) {
+            document.getElementById('medGrid').innerHTML = Object.keys(meds).map(k => {
+                const m = meds[k];
+                return `<div class="bg-white p-3 rounded-[2.5rem] border flex flex-col justify-between shadow-sm">
+                    <div onclick="openProductDetails('${k}')">
+                        <img src="${m.img}" class="h-28 w-full object-contain mb-2">
+                        <h3 class="font-black text-[10px] uppercase h-8 overflow-hidden italic leading-tight">${m.name}</h3>
+                        <p class="text-[9px] font-black text-blue-700 mt-1">₹${m.price}</p>
+                    </div>
+                    <button onclick="addToCart('${m.name}', ${m.price}, '${m.img}')" class="w-full bg-blue-600 text-white py-2 rounded-full text-[8px] font-black uppercase mt-2">Add</button>
+                </div>`;
+            }).join('');
+        }
 
         function addToCart(name, price, img) {
             const index = myCart.findIndex(i => i.name === name);
             if(index > -1) { myCart[index].qty++; } 
             else { myCart.push({name, price, img, qty: 1}); }
             updateCartBadge();
-            alert(name + " cart mein add ho gaya!");
+            alert("Cart mein add ho gaya!");
         }
 
         function updateCartBadge() {
-            const badge = document.getElementById('cartBadge');
-            badge.innerText = myCart.length;
-            badge.classList.toggle('hidden', myCart.length === 0);
+            const b = document.getElementById('cartBadge');
+            b.innerText = myCart.length;
+            b.classList.toggle('hidden', myCart.length === 0);
         }
 
         function renderCart() {
@@ -292,13 +295,13 @@
             let total = 0;
             list.innerHTML = myCart.map((item, index) => {
                 total += (item.price * item.qty);
-                return `<div class="bg-white p-4 rounded-[2rem] border flex items-center gap-4 shadow-sm">
+                return `<div class="bg-white p-4 rounded-[2rem] border flex items-center gap-4">
                     <img src="${item.img}" class="w-14 h-14 object-contain">
-                    <div class="flex-1"><h4 class="font-black text-xs uppercase italic leading-none">${item.name}</h4><p class="text-blue-600 font-bold">₹${item.price} x ${item.qty}</p></div>
+                    <div class="flex-1"><h4 class="font-black text-xs uppercase italic">${item.name}</h4><p class="text-blue-600 font-bold">₹${item.price} x ${item.qty}</p></div>
                     <div class="flex items-center gap-2">
-                        <button onclick="changeQty(${index}, -1)" class="w-8 h-8 bg-gray-100 rounded-full font-black text-xs">-</button>
+                        <button onclick="changeQty(${index}, -1)" class="w-8 h-8 bg-gray-100 rounded-full font-black">-</button>
                         <span class="font-black text-xs">${item.qty}</span>
-                        <button onclick="changeQty(${index}, 1)" class="w-8 h-8 bg-blue-100 text-blue-700 rounded-full font-black text-xs">+</button>
+                        <button onclick="changeQty(${index}, 1)" class="w-8 h-8 bg-blue-100 text-blue-700 rounded-full font-black">+</button>
                     </div>
                 </div>`;
             }).join('');
@@ -312,8 +315,17 @@
             renderCart();
         }
 
-        function checkout() {
+        function renderOrders() {
             const user = JSON.parse(localStorage.getItem('prishaUser'));
-            const time = new Date().toLocaleString('en-IN');
-            myCart.forEach(item => {
-                db.ref('pOrders').push({...user, item: `${item.name} (Qty: ${item.qty})`, price: item.price * item.qty, img: item.img,
+            if(!user) return;
+            db.ref('pOrders').on('value', snap => {
+                const data = snap.val() || {};
+                const list = Object.keys(data).map(k => ({...data[k], key: k}))
+                             .filter(o => o.phone === user.phone).reverse();
+                
+                document.getElementById('orderList').innerHTML = list.map(o => {
+                    const canCancel = (o.status === 'Received' || o.status === 'Accepted');
+                    return `<div class="bg-white p-5 rounded-[2rem] border-l-8 ${o.status==='Cancelled'?'border-red-400':'border-blue-600'} shadow-sm mb-3">
+                        <div class="flex items-start gap-3">
+                            <img src="${o.img}" class="w-14 h-14 object-contain rounded-lg">
+            
