@@ -21,14 +21,12 @@
         .status-Cancelled { background: #fee2e2; color: #ef4444; }
         #adminMainPanel { display: none; }
         #securityOverlay { display: flex; }
-        @media print { body * { visibility: hidden; } #printArea, #printArea * { visibility: visible; } #printArea { display: block !important; position: absolute; left: 0; top: 0; width: 80mm; background: white; padding: 10px; } }
-        #printArea { display: none; }
     </style>
 </head>
 <body class="pb-24">
 
     <div id="securityOverlay" class="fixed inset-0 bg-[#2874f0] z-[1000] flex flex-col items-center justify-center p-6 text-white">
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-w-sm text-center text-gray-800">
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-sm text-center text-gray-800">
             <h1 class="text-2xl font-black text-[#2874f0] mb-2 uppercase italic tracking-tighter">PRISHA <span class="text-yellow-500">ADMIN</span></h1>
             <p class="text-[10px] font-bold text-gray-400 mb-6 uppercase tracking-widest border-b pb-2">Master Security Layer</p>
             <input type="password" id="adminPassInput" placeholder="Master Password" class="w-full px-4 py-4 rounded-2xl bg-gray-100 mb-4 text-center font-bold outline-none border-2 focus:border-[#2874f0]">
@@ -114,8 +112,6 @@
         </main>
     </div>
 
-    <div id="printArea" class="text-[12px] font-mono leading-tight"><div id="billContent"></div></div>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAhd2hHsaqoIGm1GOen_sjld1TE6U_ZxPs",
@@ -131,7 +127,6 @@
 
         const MASTER_PASS = "Prisha@2025";
 
-        // FIX: Login Function 
         function checkAdminAccess() {
             const pass = document.getElementById('adminPassInput').value;
             if(pass === MASTER_PASS) {
@@ -166,15 +161,21 @@
         function renderOrders(orders) {
             const list = document.getElementById('orderList');
             if(!orders) { list.innerHTML = "<p class='text-center py-10 font-bold text-gray-400 uppercase tracking-widest'>No active orders</p>"; return; }
+            
             const grouped = {};
             Object.keys(orders).forEach(id => {
                 const o = orders[id]; const key = o.time + "_" + o.phone;
                 if(!grouped[key]) grouped[key] = { ...o, ids: [id], items: [o.item] };
                 else { grouped[key].items.push(o.item); grouped[key].ids.push(id); }
             });
+
             list.innerHTML = Object.values(grouped).reverse().map(group => {
                 const allItems = group.items.join(" + ");
                 const idsJson = JSON.stringify(group.ids);
+
+                // Prescription Photo Logic
+                let pImage = group.img ? `<div class="mt-2"><p class="text-[9px] font-bold text-red-500 italic uppercase">Parcha:</p><a href="${group.img}" target="_blank"><img src="${group.img}" class="w-full max-h-40 object-contain rounded-xl border border-blue-200 shadow-sm bg-white"></a></div>` : "";
+
                 let btns = "";
                 if(group.status === 'Received') btns = `<button onclick='updateStatus(${idsJson}, "Accepted")' class="bg-yellow-500 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Accept</button>`;
                 else if(group.status === 'Accepted') btns = `<button onclick='updateStatus(${idsJson}, "Shipped")' class="bg-blue-600 text-white px-3 py-2 rounded-xl text-[10px] font-bold uppercase">Ship</button>`;
@@ -184,6 +185,7 @@
                 
                 return `<div class="bg-slate-50 p-5 rounded-[2rem] border shadow-sm flex flex-col gap-3">
                     <div class="flex justify-between items-start"><div class="flex-1"><b class="text-blue-800 text-sm uppercase">${allItems}</b><br><span class="text-[10px] font-bold text-gray-400 uppercase">${group.customer}</span></div><span class="px-3 py-1 rounded-full text-[8px] font-black uppercase status-${group.status}">${group.status}</span></div>
+                    ${pImage}
                     <p class="text-[10px] text-gray-500 italic bg-white p-3 rounded-2xl border-l-4 border-blue-500">Address: ${group.deliveryAddress} | Ph: <b>${group.phone}</b></p>
                     <div class="flex justify-end gap-2 border-t pt-3 mt-1">${btns}</div>
                 </div>`;
@@ -270,5 +272,4 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>
