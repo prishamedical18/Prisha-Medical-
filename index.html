@@ -125,7 +125,6 @@
     </div>
 
     <script>
-        // Full config match with your screenshots
         const firebaseConfig = {
             apiKey: "AIzaSyAhd2hHsaqoIGm1GOen_sjld1TE6U_ZxPs",
             authDomain: "prisha-medical-18.firebaseapp.com",
@@ -150,16 +149,23 @@
             const pin = document.getElementById('uPin').value;
             if(!n || !p || !v || !b || !pin) { alert("Puri details bhariye!"); return; }
             
-            const user = { name: n, phone: p, fullAddress: `${v}, Block: ${b}, Pin: ${pin}` };
-            localStorage.setItem('prishaUser', JSON.stringify(user));
-            
-            // Online Link Fix: Seedha interface toggle bina reload ke
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('appInterface').style.display = 'block';
-            
-            updateProfileUI(user);
-            syncCloudStore();
-            renderOrders();
+            const user = { 
+                name: n, 
+                phone: p, 
+                address: `${v}, Block: ${b}, Pin: ${pin}`, // admin panel sync field
+                fullAddress: `${v}, Block: ${b}, Pin: ${pin}`, 
+                lastLogin: new Date().toLocaleString('en-IN')
+            };
+
+            // Database sync for Admin visibility
+            db.ref('pUsers/' + p).set(user).then(() => {
+                localStorage.setItem('prishaUser', JSON.stringify(user));
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appInterface').style.display = 'block';
+                updateProfileUI(user);
+                syncCloudStore();
+                renderOrders();
+            });
         }
 
         window.onload = function() {
@@ -170,6 +176,8 @@
                 updateProfileUI(user);
                 syncCloudStore();
                 renderOrders();
+                // Update login record in cloud
+                db.ref('pUsers/' + user.phone).update({ lastLogin: new Date().toLocaleString('en-IN') });
             }
         };
 
@@ -210,14 +218,16 @@
         }
 
         function syncCloudStore() {
+            // SYNC EXPERTS
             db.ref('pExperts').on('value', snap => {
                 const exps = snap.val() || {};
                 document.getElementById('expertBar').innerHTML = Object.keys(exps).map(k => `
                     <div class="min-w-[110px] bg-white p-3 rounded-[2.5rem] border text-center shadow-sm">
-                        <a href="tel:${exps[k].phone}"><img src="${exps[k].img}" class="w-12 h-12 rounded-full mx-auto object-cover border-2 border-blue-500 mb-1"></a>
-                        <h4 class="font-black text-[8px] uppercase italic">${exps[k].name}</h4>
+                        <a href="tel:${exps[k].phone}"><img src="${exps[k].img}" class="w-14 h-14 rounded-full mx-auto object-cover border-2 border-blue-500 mb-1"></a>
+                        <h4 class="font-black text-[9px] uppercase italic leading-none">${exps[k].name}</h4>
                     </div>`).join('');
             });
+            // SYNC MEDICINES
             db.ref('pMeds').on('value', snap => {
                 allMeds = snap.val() || {};
                 renderMedicineGrid(allMeds);
@@ -227,11 +237,11 @@
         function renderMedicineGrid(meds) {
             document.getElementById('medGrid').innerHTML = Object.keys(meds).map(k => {
                 const m = meds[k];
-                return `<div class="bg-white p-3 rounded-[2.5rem] border flex flex-col justify-between shadow-sm">
-                    <img src="${m.img}" class="h-28 w-full object-contain mb-2">
-                    <h3 class="font-black text-[10px] uppercase h-8 overflow-hidden italic leading-tight">${m.name}</h3>
-                    <p class="text-[9px] font-black text-blue-700 mt-1">₹${m.price}</p>
-                    <button onclick="addToCart('${m.name}', ${m.price}, '${m.img}')" class="w-full bg-blue-600 text-white py-2 rounded-full text-[8px] font-black uppercase mt-2">Add</button>
+                return `<div class="bg-white p-4 rounded-[2.5rem] border flex flex-col justify-between shadow-sm">
+                    <img src="${m.img}" class="h-28 w-full object-contain mb-2 rounded-xl">
+                    <h3 class="font-black text-[11px] uppercase h-8 overflow-hidden italic leading-tight text-gray-800">${m.name}</h3>
+                    <p class="text-[10px] font-black text-blue-700 mt-1">₹${m.price}</p>
+                    <button onclick="addToCart('${m.name}', ${m.price}, '${m.img}')" class="w-full bg-blue-600 text-white py-2 rounded-full text-[9px] font-black uppercase mt-2 shadow-md active:scale-95">Add</button>
                 </div>`;
             }).join('');
         }
@@ -272,13 +282,15 @@
             if(index > -1) { myCart[index].qty++; } 
             else { myCart.push({name, price, img, qty: 1}); }
             updateCartBadge();
-            alert("Cart mein add ho gaya!");
+            alert("Added to cart!");
         }
 
         function updateCartBadge() {
             const b = document.getElementById('cartBadge');
-            b.innerText = myCart.length;
-            b.classList.toggle('hidden', myCart.length === 0);
+            if(b) {
+                b.innerText = myCart.length;
+                b.classList.toggle('hidden', myCart.length === 0);
+            }
         }
 
         function renderCart() {
@@ -319,7 +331,7 @@
             myCart.forEach(item => {
                 db.ref('pOrders').push({...user, item: `${item.name} (Qty: ${item.qty})`, price: item.price * item.qty, img: item.img, status: 'Received', time: time});
             });
-            myCart = []; updateCartBadge(); alert("Order Safal Hua!"); 
+            myCart = []; updateCartBadge(); alert("Order Placed!"); 
             showTab('orders-tab', document.querySelectorAll('.nav-btn')[2]);
         }
 
